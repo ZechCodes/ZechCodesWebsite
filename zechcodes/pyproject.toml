@@ -1,11 +1,13 @@
 [tool.poetry]
 name = "zechcodes"
-version = "0.1.0"
+version = "2019.08.000"
 description = ""
 authors = ["Zech Zimmerman <zechzimm@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
+starlette = "^0.12.8"
+hypercorn = "^0.7.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^3.0"
