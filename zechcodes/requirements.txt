@@ -8,4 +8,3 @@ toml==0.10.0
 typing==3.7.4
 typing-extensions==3.7.4
 wsproto==0.15.0
--e git+git@github.com:ZechCodes/ZechCodesWebsite.git@bcf8c7020452403bdc41ac8b53ed2e8b6579704c#egg=zechcodes
