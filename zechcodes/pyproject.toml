@@ -5,7 +5,7 @@ description = ""
 authors = ["Zech Zimmerman <zechzimm@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "3.8.0"
 starlette = "^0.12.8"
 hypercorn = "^0.7.2"
 
