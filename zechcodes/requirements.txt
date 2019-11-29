@@ -1,0 +1,11 @@
+h11==0.9.0
+h2==3.1.1
+hpack==3.0.0
+Hypercorn==0.7.2
+hyperframe==5.2.0
+starlette==0.12.8
+toml==0.10.0
+typing==3.7.4
+typing-extensions==3.7.4
+wsproto==0.15.0
+-e git+git@github.com:ZechCodes/ZechCodesWebsite.git@bcf8c7020452403bdc41ac8b53ed2e8b6579704c#egg=zechcodes
