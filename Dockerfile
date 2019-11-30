@@ -7,4 +7,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY zechcodes/zechcodes zechcodes
 
-CMD ["python3", "-m", "zechcodes"]
+CMD ["hypercorn", "--bind", "0.0.0.0:80", "--workers", "8", "zechcodes.app:app"]
