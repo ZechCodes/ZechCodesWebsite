@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: zech-codes
+  labels:
+    name: zech-codes
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zech-codes
+  namespace: zech-codes
+  labels:
+    app: zech-codes
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zech-codes
+  template:
+    metadata:
+      labels:
+        app: zech-codes
+    spec:
+      containers:
+        - name: zech-codes
+          image: zzmmrmn/zech-codes:2019.11.002
+          ports:
+            - containerPort: 8080
+              name: http
+          env:
+            - name: "ENVIRONMENT"
+              value: "PRODUCTION"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zech-codes
+  namespace: zech-codes
+  labels:
+    name: zech-codes
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 8080
+      name: http
+  selector:
+    app: zech-codes
