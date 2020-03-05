@@ -1,0 +1,30 @@
+version: "3.2"
+services:
+  postgres_db:
+    image: "postgres:12.1"
+    container_name: "zechcodes-postgres"
+    environment:
+      - POSTGRES_USER=zechcodes
+      - POSTGRES_PASSWORD=safe-to-be-public
+      - POSTGRES_DB=zechcodes
+    expose:
+      - "5432"
+    volumes:
+      - ../postgres-data:/var/lib/postgresql/data
+  builder:
+    build: ..
+    image: zzmmrmn/zechcodes:latest
+    command: echo ""
+  site:
+    build: ..
+    image: zzmmrmn/zechcodes:${VERSION}
+    depends_on:
+      - postgres_db
+    ports:
+      - target: 8080
+        published: 8080
+        protocol: tcp
+    env_file:
+      - ../site.config
+    volumes:
+      - ../zechcodes/zechcodes:/usr/src/app/zechcodes
