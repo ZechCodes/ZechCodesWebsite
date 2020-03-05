@@ -1,5 +1,6 @@
-from zechcodes import __version__
+import zechcodes
 
 
-def test_version():
-    assert __version__ == '2019.08.000'
+class TestApp:
+    def test_app(self):
+        assert zechcodes.__version__ == "0.0.1"
