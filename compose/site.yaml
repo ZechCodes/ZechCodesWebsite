@@ -18,6 +18,7 @@ services:
   site:
     build: ..
     image: zzmmrmn/zechcodes:${VERSION}
+    command: hypercorn --bind 0.0.0.0:8080 --workers 1 --reload zechcodes.app:app
     depends_on:
       - postgres_db
     ports:
