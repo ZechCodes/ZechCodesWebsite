@@ -1,4 +1,4 @@
-FROM python:3.8.0
+FROM python:3.8.2
 MAINTAINER Zech Zimmerman "hi@zech.codes"
 WORKDIR /usr/src/app
 
