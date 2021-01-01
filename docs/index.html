@@ -13,22 +13,27 @@
             body{
                 background-color: #2f2f2f;
             }
-            div {
+            #hero {
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 width: 100%;
                 min-height: 100vh;
             }
+            #hero div{
+                text-align: center;
+            }
             img {
-                width: 750px;
-                height: 375px;
+                width:100%;
+                max-width: 750px;
             }
         </style>
     </head>
     <body style="margin: 0; padding: 0;">
-        <div>
-            <img src="zech-codes.png" />
+        <div id="hero">
+            <div>
+                <img src="zech-codes.png" />
+            </div>
         </div>
     </body>
 </html>
