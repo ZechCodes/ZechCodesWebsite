@@ -32,10 +32,36 @@
                 width:100%;
                 max-width: 750px;
             }
+            .github-profile{
+                position: absolute;
+                padding: 20px;
+                top: 0;
+                right: 0;
+            }
+            .github-profile::before{
+                border: 100px transparent solid;
+                border-bottom-color: black;
+                content: "";
+                display: block;
+                position: absolute;
+                top: -110px;
+                right: -110px;
+                transform: rotate(45deg);
+                transition: border-bottom-color 0.2s;
+                z-index: -1;
+            }
+            .github-profile:hover::before{
+                border-bottom-color: #fb7d01;
+            }
         </style>
     </head>
     <body style="margin: 0; padding: 0;">
         <div id="hero">
+            <a href="https://github.com/ZechCodes" target="_blank">
+                <div class="github-profile">
+                    <img src="GitHub-Mark-Light-32px.png" />
+                </div>
+            </a>
             <div>
                 <img src="zech-codes.png" />
             </div>
