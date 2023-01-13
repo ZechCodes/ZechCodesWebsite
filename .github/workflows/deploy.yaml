@@ -24,7 +24,7 @@ jobs:
         token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
     - name: Configure kubectl
-      run: doctl kubernetes cluster kubeconfig save production-hosting && kubectl config set-context --current --namespace=bc-websites
+      run: doctl kubernetes cluster kubeconfig save production-hosting && kubectl config set-context --current --namespace=zechcodes
 
     - name: Log Docker in
       env:
