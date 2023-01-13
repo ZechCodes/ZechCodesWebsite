@@ -7,6 +7,7 @@ on:
       - '**.gitignore'
       - 'LICENSE'
       - 'migrations/README'
+      - 'k8s/site.yaml'
 
 jobs:
   build:
