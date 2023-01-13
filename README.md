@@ -1,6 +1,6 @@
 # Zech.Codes Website
 
-This is the code for running my personal site. It's built using Starlette and at this time is just used to do redirects to other my other sites and communities.
+This is the code for running my personal site. It's built using Starlette and at this time is just used to do redirects to my other sites and communities.
 
 ## Installation & Running
 
