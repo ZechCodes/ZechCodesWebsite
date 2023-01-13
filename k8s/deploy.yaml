@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: zechcodes-website
+    labels:
+        app: zechcodes-website
+spec:
+    strategy:
+        type: RollingUpdate
+        rollingUpdate:
+            maxSurge: 2
+            maxUnavailable: 50%
+    selector:
+        matchLabels:
+            app: zechcodes-website
+            tier: frontend
+    replicas: 2
+    template:
+        metadata:
+            labels:
+                app: zechcodes-website
+                tier: frontend
+        spec:
+            topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              whenUnsatisfiable: ScheduleAnyway
+              labelSelector:
+                  matchLabels:
+                      app: zechcodes-website
+            containers:
+              - name: starlette-site
+                image: zzmmrmn/zech.codes-website:<IMAGE_VERSION>
+                ports:
+                  - containerPort: 8000
+                resources:
+                    requests:
+                        cpu: 100m

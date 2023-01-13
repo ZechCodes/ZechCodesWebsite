@@ -1,0 +1,45 @@
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Deploy to K8s on Digital Ocean
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout the repo
+      uses: actions/checkout@main
+
+    - name: Get latest commit SHA for the version tag
+      run: echo $GITHUB_SHA > $GITHUB_WORKSPACE/_meta
+
+    - name: Update deployment file w/ new image tag
+      run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE_VERSION>|'${TAG}'|' $GITHUB_WORKSPACE/k8s/deploy.yaml
+
+    - name: Install doctl
+      uses: digitalocean/action-doctl@v2
+      with:
+        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+    - name: Configure kubectl
+      run: doctl kubernetes cluster kubeconfig save production-hosting && kubectl config set-context --current --namespace=bc-websites
+
+    - name: Log Docker in
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+
+    - name: Build container image
+      run: docker build -t zzmmrmn/zech.codes-website:$(echo $GITHUB_SHA | head -c7) .
+
+    - name: Push image to Docker Hub
+      run: docker push zzmmrmn/zech.codes-website:$(echo $GITHUB_SHA | head -c7)
+
+    - name: Deploy to DigitalOcean Kubernetes
+      run: kubectl apply -f $GITHUB_WORKSPACE/k8s/deploy.yaml
+
+    - name: Verify deployment
+      run: kubectl rollout status deployment/zechcodes-website
