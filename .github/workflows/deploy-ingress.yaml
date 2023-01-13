@@ -1,0 +1,26 @@
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'k8s/site.yaml'
+
+jobs:
+  build:
+    name: Deploy Ingress to K8s on Digital Ocean
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout the repo
+      uses: actions/checkout@main
+
+    - name: Install doctl
+      uses: digitalocean/action-doctl@v2
+      with:
+        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+    - name: Configure kubectl
+      run: doctl kubernetes cluster kubeconfig save production-hosting && kubectl config set-context --current --namespace=zechcodes
+
+    - name: Deploy to DigitalOcean Kubernetes
+      run: kubectl apply -f $GITHUB_WORKSPACE/k8s/site.yaml
