@@ -14,15 +14,14 @@ def get_blog_redirect_routes():
         "how-to-use-anyall-efficiently-in-python",
     ]
     return (
-        Route(
-            f"/{slug}",
-            _create_redirect_handler(f"{blog_site}/{slug}", 301)
-        )
+        Route(f"/{slug}", _create_redirect_handler(f"{blog_site}/{slug}", 301))
         for slug in redirect_blog_slugs
     )
 
 
-def _create_redirect_handler(url: str, status_code: int = 302) -> Callable[[Request], Awaitable[RedirectResponse]]:
+def _create_redirect_handler(
+    url: str, status_code: int = 302
+) -> Callable[[Request], Awaitable[RedirectResponse]]:
     async def redirect(request: Request) -> RedirectResponse:
         return RedirectResponse(url, status_code)
 
@@ -32,7 +31,16 @@ def _create_redirect_handler(url: str, status_code: int = 302) -> Callable[[Requ
 app = Starlette(
     routes=[
         Route("/", _create_redirect_handler(blog_site), name="index"),
-        Route('/discord', _create_redirect_handler("https://discord.gg/de8kajxbYS"), name="discord-invite"),
-        *get_blog_redirect_routes()
+        Route(
+            "/discord",
+            _create_redirect_handler("https://discord.gg/de8kajxbYS"),
+            name="discord-invite",
+        ),
+        Route(
+            "/bevy",
+            _create_redirect_handler("https://bevy.zech.codes/"),
+            name="bevy-docs",
+        ),
+        *get_blog_redirect_routes(),
     ]
 )
