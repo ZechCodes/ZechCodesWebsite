@@ -41,6 +41,11 @@ app = Starlette(
             _create_redirect_handler("https://bevy.zech.codes/"),
             name="bevy-docs",
         ),
+        Route(
+            "/github",
+            _create_redirect_handler("https://github.com/ZechCodes/"),
+            name="github",
+        ),
         *get_blog_redirect_routes(),
     ]
 )
