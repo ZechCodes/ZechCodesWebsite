@@ -1,14 +1,17 @@
-FROM python:3.11-buster as builder
+FROM python:3.11-slim-bookworm AS builder
 
 WORKDIR /app
+
+COPY --from=ghcr.io/astral-sh/uv:0.13.4 /uv /bin/uv
+COPY scripts/verify_ca_trust.py scripts/impacted-intermediates.json scripts/
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends gcc && \
-    pip install --upgrade pip && \
-    pip install poetry
+    apt-get install -y --no-install-recommends gcc ca-certificates openssl && \
+    uv pip install --system "pip==26.2.2" "poetry==1.8.5" "certifi==2026.10.19" && \
+    python scripts/verify_ca_trust.py
 
 COPY pyproject.toml .
 COPY poetry.lock .
@@ -16,15 +19,23 @@ COPY poetry.lock .
 RUN poetry export --without-hashes -f requirements.txt --output requirements.txt && \
     pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.txt
 
-FROM python:3.11-slim
+FROM python:3.11-slim-bookworm
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends ca-certificates openssl && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN addgroup --gid 1001 --system app && \
     adduser --no-create-home --shell /bin/false --disabled-password --uid 1001 --system --group app
 
 WORKDIR /app
+COPY --from=builder /bin/uv /bin/uv
+COPY --from=builder /app/scripts /app/scripts
 COPY --from=builder /app/wheels /wheels
-RUN pip install --no-cache --upgrade pip && \
-    pip install --no-cache /wheels/*
+RUN uv pip install --system "certifi==2026.10.19" && \
+    python scripts/verify_ca_trust.py && \
+    uv pip install --system /wheels/* && \
+    python scripts/verify_ca_trust.py
 
 RUN chmod ugo+rw /app
 COPY website website
